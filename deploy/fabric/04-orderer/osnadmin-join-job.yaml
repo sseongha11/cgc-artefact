@@ -1,0 +1,80 @@
+# Channel-participation join: feeds the channel application-genesis block to the
+# orderer's Admin endpoint via `osnadmin channel join`. Required in Fabric 2.5+
+# when BOOTSTRAPMETHOD=none. Idempotent: succeeds whether the channel exists or not.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cgc-osnadmin-join
+  namespace: cgc
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        job: cgc-osnadmin-join
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+      containers:
+        - name: tools
+          image: hyperledger/fabric-tools:2.5
+          command: ["/bin/bash", "-euo", "pipefail", "-c"]
+          args:
+            - |
+              ORDERER_TLS_DIR=/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls
+
+              # Wait for orderer admin endpoint to accept connections.
+              for i in $(seq 1 30); do
+                if osnadmin channel list \
+                     -o orderer:9443 \
+                     --ca-file "${ORDERER_TLS_DIR}/ca.crt" \
+                     --client-cert "${ORDERER_TLS_DIR}/server.crt" \
+                     --client-key  "${ORDERER_TLS_DIR}/server.key" >/dev/null 2>&1; then
+                  echo "orderer admin endpoint is ready"
+                  break
+                fi
+                echo "  waiting for orderer admin endpoint... ($i/30)"
+                sleep 2
+              done
+
+              echo "==> joining mychannel"
+              # The join is idempotent — if mychannel already exists, osnadmin returns 405
+              # (method not allowed). We grep for that and treat it as success.
+              set +e
+              OUT=$(osnadmin channel join \
+                --channelID mychannel \
+                --config-block /channel-artifacts/mychannel.block \
+                -o orderer:9443 \
+                --ca-file "${ORDERER_TLS_DIR}/ca.crt" \
+                --client-cert "${ORDERER_TLS_DIR}/server.crt" \
+                --client-key  "${ORDERER_TLS_DIR}/server.key" 2>&1)
+              RC=$?
+              set -e
+              echo "$OUT"
+              if [ $RC -ne 0 ]; then
+                if echo "$OUT" | grep -qi "already exists\|cannot join.*already\|405"; then
+                  echo "channel already joined — ok"
+                else
+                  exit $RC
+                fi
+              fi
+
+              echo "==> orderer channel list"
+              osnadmin channel list \
+                -o orderer:9443 \
+                --ca-file "${ORDERER_TLS_DIR}/ca.crt" \
+                --client-cert "${ORDERER_TLS_DIR}/server.crt" \
+                --client-key  "${ORDERER_TLS_DIR}/server.key"
+          volumeMounts:
+            - { name: data, mountPath: /organizations,     subPath: organizations }
+            - { name: data, mountPath: /channel-artifacts, subPath: channel-artifacts }
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 50m
+            limits:
+              memory: 256Mi
+              cpu: 300m

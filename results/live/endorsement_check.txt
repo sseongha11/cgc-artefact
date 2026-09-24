@@ -1,0 +1,14 @@
+== definition
+Version: 1.1, Sequence: 2, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true, Org3MSP: true]
+== FinalizeStep endorsed by Org1 and Org2 only
+2026-09-24 14:12:06.852 UTC 0001 INFO [chaincodeCmd] ClientWait -> txid [e70e32848b82e5cc762b77e64cf167b26d2cb47203b6e88d471d879a8afabe8e] committed with status (ENDORSEMENT_POLICY_FAILURE) at peer0-org2:7051
+2026-09-24 14:12:06.853 UTC 0002 INFO [chaincodeCmd] ClientWait -> txid [e70e32848b82e5cc762b77e64cf167b26d2cb47203b6e88d471d879a8afabe8e] committed with status (ENDORSEMENT_POLICY_FAILURE) at peer0-org1:7051
+Error: transaction invalidated with status (ENDORSEMENT_POLICY_FAILURE) - proposal response: <nil>
+state:
+"status":"OPEN"
+== FinalizeStep endorsed by all three
+2026-09-24 14:12:12.779 UTC 0002 INFO [chaincodeCmd] ClientWait -> txid [7994b93b1e7bf398b19b258dd8b971c3e528cdf209009133ca7d939e3c5aa76a] committed with status (VALID) at peer0-org2:7051
+2026-09-24 14:12:12.779 UTC 0003 INFO [chaincodeCmd] ClientWait -> txid [7994b93b1e7bf398b19b258dd8b971c3e528cdf209009133ca7d939e3c5aa76a] committed with status (VALID) at peer0-org3:7051
+2026-09-24 14:12:12.780 UTC 0004 INFO [chaincodeCmd] chaincodeInvokeOrQuery -> Chaincode invoke successful. result: status:200 payload:"REJECTED" 
+state:
+"status":"REJECTED"

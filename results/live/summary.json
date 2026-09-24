@@ -1,0 +1,92 @@
+{
+  "stamp": "20260924-152804",
+  "sample": 20,
+  "model": "anthropic/claude-sonnet-5",
+  "rows": [
+    {
+      "coordinator": "CGC (Fabric)",
+      "policy": "ANY",
+      "n": 20,
+      "latency_p50_s": 11.112935000000002,
+      "latency_p95_s": 11.40428,
+      "writes_mean": 5,
+      "s_per_write": 2.2402437,
+      "rounds_mean": 1,
+      "accuracy": 0.9,
+      "audit_complete": "20/20",
+      "trail_bytes_mean": 1183.2
+    },
+    {
+      "coordinator": "CGC (Fabric)",
+      "policy": "MAJORITY",
+      "n": 20,
+      "latency_p50_s": 11.117645,
+      "latency_p95_s": 11.28234,
+      "writes_mean": 5,
+      "s_per_write": 2.227595,
+      "rounds_mean": 1,
+      "accuracy": 0.9,
+      "audit_complete": "20/20",
+      "trail_bytes_mean": 1193.35
+    },
+    {
+      "coordinator": "CGC (Fabric)",
+      "policy": "UNANIMOUS",
+      "n": 20,
+      "latency_p50_s": 11.154900000000001,
+      "latency_p95_s": 22.03233,
+      "writes_mean": 5.5,
+      "s_per_write": 2.22810685,
+      "rounds_mean": 1.1,
+      "accuracy": 0.8,
+      "audit_complete": "18/18",
+      "trail_bytes_mean": 1196.0555555555557
+    },
+    {
+      "coordinator": "CGC (Fabric)",
+      "policy": "ROLE_WEIGHTED",
+      "n": 20,
+      "latency_p50_s": 11.15245,
+      "latency_p95_s": 11.4307,
+      "writes_mean": 5,
+      "s_per_write": 2.2379691000000004,
+      "rounds_mean": 1,
+      "accuracy": 0.9,
+      "audit_complete": "20/20",
+      "trail_bytes_mean": 1203.5
+    },
+    {
+      "coordinator": "CGC (Fabric)",
+      "policy": "MAJORITY",
+      "attack": "forgery on half",
+      "forgery": "0/1 accepted"
+    },
+    {
+      "coordinator": "local",
+      "policy": "MAJORITY",
+      "n": 20,
+      "latency_p50_s": 0.00134,
+      "latency_p95_s": 0.0016699999999999998,
+      "writes_mean": 5,
+      "accuracy": 0.9
+    },
+    {
+      "coordinator": "orchestrator",
+      "policy": "MAJORITY",
+      "n": 20,
+      "latency_p50_s": 0.00121,
+      "latency_p95_s": 0.00155,
+      "writes_mean": 0,
+      "accuracy": 0.9
+    },
+    {
+      "coordinator": "ledgerless",
+      "policy": "MAJORITY",
+      "n": 20,
+      "latency_p50_s": 0.002,
+      "latency_p95_s": 0.0029500000000000004,
+      "writes_mean": 0,
+      "accuracy": 0.9
+    }
+  ]
+}

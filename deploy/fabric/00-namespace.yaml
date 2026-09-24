@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cgc
+  labels:
+    app.kubernetes.io/name: cgc
+    app.kubernetes.io/part-of: cgc

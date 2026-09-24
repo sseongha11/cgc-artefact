@@ -1,0 +1,71 @@
+# Joins all three peers to mychannel and applies anchor-peer updates.
+# Assumes the orderer already auto-created the channel from its bootstrap block.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cgc-channel
+  namespace: cgc
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        job: cgc-channel
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+      containers:
+        - name: tools
+          image: hyperledger/fabric-tools:2.5
+          command: ["/bin/bash", "-euo", "pipefail", "-c"]
+          env:
+            - name: ORDERER_CA
+              value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+            - name: FABRIC_CFG_PATH
+              value: /etc/hyperledger/fabric  # has the default core.yaml shipped in the image
+          args:
+            - |
+              join_peer() {
+                local ORG=$1
+                export CORE_PEER_LOCALMSPID=Org${ORG}MSP
+                export CORE_PEER_TLS_ENABLED=true
+                export CORE_PEER_TLS_ROOTCERT_FILE=/organizations/peerOrganizations/org${ORG}.example.com/peers/peer0.org${ORG}.example.com/tls/ca.crt
+                export CORE_PEER_MSPCONFIGPATH=/organizations/peerOrganizations/org${ORG}.example.com/users/Admin@org${ORG}.example.com/msp
+                export CORE_PEER_ADDRESS=peer0-org${ORG}:7051
+
+                if peer channel list 2>/dev/null | grep -q "^mychannel$"; then
+                  echo "==> peer0-org${ORG} already on mychannel, skipping fetch+join"
+                else
+                  echo "==> fetching genesis block for org${ORG}"
+                  peer channel fetch oldest /tmp/mychannel.block \
+                    -o orderer:7050 -c mychannel \
+                    --tls --cafile "$ORDERER_CA"
+
+                  echo "==> joining peer0-org${ORG} to mychannel"
+                  peer channel join -b /tmp/mychannel.block
+                fi
+                # Anchor peer update intentionally skipped: configtxgen-generated
+                # anchor.tx files target the legacy `peer channel create` config
+                # version, whereas Fabric 2.5 channel-participation skips that
+                # version. Anchor peers are a cross-org gossip optimisation only —
+                # chaincode lifecycle doesn't require them. Use configtxlator-based
+                # config update for production.
+              }
+
+              join_peer 1
+              join_peer 2
+              join_peer 3
+              echo "all peers joined"
+          volumeMounts:
+            - { name: data, mountPath: /organizations,      subPath: organizations }
+            - { name: data, mountPath: /channel-artifacts,  subPath: channel-artifacts }
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m

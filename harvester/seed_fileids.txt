@@ -1,0 +1,11 @@
+# PINS decision-letter ACP fileids — validation seed set (harvested 2026-07).
+# One fileid per line. Resolve more via the ACP case search or a
+# `site:acp.planninginspectorate.gov.uk "appeal decision"` search (see README).
+62013348   # APP/D1780/D/25/3360769  householder  ALLOWED  (Southampton, extension)
+55030080   # APP/A1910/D/23/3329469  householder  DISMISSED
+59768150   # APP/P0119/D/24/3347890  householder  DISMISSED (Green Belt)
+59710771   # APP/N4205/D/24/3346033  householder  DISMISSED (conditions)
+20065764   # APP/X2600/C/16/3151794  enforcement  -> excluded (compound)
+36989670   # APP/N5090/X/19/3240096  lawful-dev   -> excluded (diff test)
+57151931   # APP/Z1510/C/22/3299386  enforcement  -> excluded (hearing/multi)
+59948796   # APP/N0410/C/23/3315700  enforcement  -> excluded (Appeal A/B)

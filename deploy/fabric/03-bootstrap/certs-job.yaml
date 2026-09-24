@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cgc-certs
+  namespace: cgc
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        job: cgc-certs
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+        - name: scripts
+          configMap:
+            name: cgc-bootstrap-scripts
+            defaultMode: 0755
+      containers:
+        - name: certs
+          image: hyperledger/fabric-ca:1.5.7
+          # fabric-ca image ships with the client; use shell to drive it.
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              cd /tmp
+              /scripts/orderer-certs.sh
+              /scripts/org-certs.sh 1 7054
+              /scripts/org-certs.sh 2 8054
+              /scripts/org-certs.sh 3 9054
+              /scripts/ccp.sh
+              echo "all certs and connection profiles generated"
+          volumeMounts:
+            - name: data
+              mountPath: /organizations
+              subPath: organizations
+            - name: data
+              mountPath: /connection-profile
+              subPath: connection-profile
+            - name: scripts
+              mountPath: /scripts
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m

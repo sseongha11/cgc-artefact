@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer
+  namespace: cgc
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: orderer
+  template:
+    metadata:
+      labels:
+        app: orderer
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+      containers:
+        - name: orderer
+          image: hyperledger/fabric-orderer:2.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - { name: ORDERER_GENERAL_LISTENADDRESS, value: "0.0.0.0" }
+            - { name: ORDERER_GENERAL_LISTENPORT,    value: "7050" }
+            - { name: ORDERER_GENERAL_LOGLEVEL,      value: INFO }
+            - { name: ORDERER_GENERAL_LOCALMSPDIR,   value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp }
+            - { name: ORDERER_GENERAL_LOCALMSPID,    value: OrdererMSP }
+            # Channel participation API (Fabric 2.5+): no system channel; channels are
+            # joined via `osnadmin channel join`.
+            - { name: ORDERER_GENERAL_BOOTSTRAPMETHOD,         value: none }
+            - { name: ORDERER_CHANNELPARTICIPATION_ENABLED,    value: "true" }
+            - { name: ORDERER_GENERAL_TLS_ENABLED,             value: "true" }
+            - { name: ORDERER_GENERAL_TLS_PRIVATEKEY,          value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key }
+            - { name: ORDERER_GENERAL_TLS_CERTIFICATE,         value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt }
+            - { name: ORDERER_GENERAL_TLS_ROOTCAS,             value: "[/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt]" }
+            - { name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY,  value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key }
+            - { name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE, value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt }
+            # Admin endpoint — mTLS-protected, used by osnadmin to join channels.
+            - { name: ORDERER_ADMIN_LISTENADDRESS,              value: "0.0.0.0:9443" }
+            - { name: ORDERER_ADMIN_TLS_ENABLED,                value: "true" }
+            - { name: ORDERER_ADMIN_TLS_CERTIFICATE,            value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt }
+            - { name: ORDERER_ADMIN_TLS_PRIVATEKEY,             value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key }
+            - { name: ORDERER_ADMIN_TLS_ROOTCAS,                value: "[/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt]" }
+            - { name: ORDERER_ADMIN_TLS_CLIENTROOTCAS,          value: "[/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt]" }
+            - { name: ORDERER_OPERATIONS_LISTENADDRESS,         value: "0.0.0.0:8443" }
+            - { name: ORDERER_METRICS_PROVIDER,                 value: "prometheus" }
+          ports:
+            - { containerPort: 7050, name: grpc }
+            - { containerPort: 9443, name: admin }
+            - { containerPort: 8443, name: operations }
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          volumeMounts:
+            - { name: data, mountPath: /organizations,     subPath: organizations }
+            - { name: data, mountPath: /channel-artifacts, subPath: channel-artifacts }
+            # Explicit production dir on the PVC so ledger survives restarts.
+            - { name: data, mountPath: /var/hyperledger/production, subPath: state/orderer }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer
+  namespace: cgc
+spec:
+  selector:
+    app: orderer
+  type: ClusterIP
+  ports:
+    - { name: grpc,       port: 7050, targetPort: 7050 }
+    - { name: admin,      port: 9443, targetPort: 9443 }
+    - { name: operations, port: 8443, targetPort: 8443 }

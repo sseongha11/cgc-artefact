@@ -1,0 +1,67 @@
+{
+  "stamp": "20260924-162100",
+  "cases": 48,
+  "policy": "MAJORITY",
+  "rows": [
+    {
+      "target": "orchestrator",
+      "concurrency": 1,
+      "cases": 48,
+      "wall_s": 2.38,
+      "cases_per_s": 20.147,
+      "latency_p50_s": 0.047,
+      "latency_p95_s": 0.058,
+      "committed": 48
+    },
+    {
+      "target": "orchestrator",
+      "concurrency": 4,
+      "cases": 48,
+      "wall_s": 1.06,
+      "cases_per_s": 45.384,
+      "latency_p50_s": 0.066,
+      "latency_p95_s": 0.182,
+      "committed": 48
+    },
+    {
+      "target": "orchestrator",
+      "concurrency": 16,
+      "cases": 48,
+      "wall_s": 0.57,
+      "cases_per_s": 84.497,
+      "latency_p50_s": 0.161,
+      "latency_p95_s": 0.204,
+      "committed": 48
+    },
+    {
+      "target": "fabric",
+      "concurrency": 1,
+      "cases": 48,
+      "wall_s": 555.29,
+      "cases_per_s": 0.086,
+      "latency_p50_s": 11.301,
+      "latency_p95_s": 11.588,
+      "committed": 48
+    },
+    {
+      "target": "fabric",
+      "concurrency": 4,
+      "cases": 48,
+      "wall_s": 184.76,
+      "cases_per_s": 0.26,
+      "latency_p50_s": 14.465,
+      "latency_p95_s": 14.942,
+      "committed": 48
+    },
+    {
+      "target": "fabric",
+      "concurrency": 16,
+      "cases": 48,
+      "wall_s": 56.06,
+      "cases_per_s": 0.856,
+      "latency_p50_s": 14.044,
+      "latency_p95_s": 17.054,
+      "committed": 48
+    }
+  ]
+}

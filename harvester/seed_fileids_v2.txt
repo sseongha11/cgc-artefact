@@ -1,0 +1,274 @@
+# v2 seed (24 September 2026): all ids from seed_fileids_batch.txt first (original 48 case corpus),
+# then ids appended by `harvest.py discover` from ACP case pages (ViewCase.aspx?caseid=N).
+
+
+# --- allowed-biased ---
+62013348
+64079602
+51899344
+59300181
+63633445
+58767872
+21972010
+58005968
+55267983
+58091116
+61726582
+54617341
+58806107
+58668176
+62271543
+63761979
+46489660
+54020590
+58668291
+58962585
+
+# --- dismissed-biased ---
+64045827
+65235234
+60279891
+57472546
+54214345
+64052954
+59710771
+59768150
+61261429
+54805085
+60608578
+55590338
+61904816
+46876034
+59653786
+59946517
+18171958
+61086554
+54100233
+58698759
+65300438
+60174909
+65006920
+58829061
+57468393
+62768895
+54178215
+63762423
+64528851
+64234192
+64849313
+62610862
+59738262
+
+# --- prior seed extras (known exclusions + 1 dismissed) ---
+55030080
+20065764
+36989670
+57151931
+59948796
+
+# --- extra allowed-biased (round 2) ---
+62925378
+63707727
+62262124
+19744827
+33262084
+62457692
+54016519
+64461073
+60675154
+55214171
+49596289
+60870464
+63475687
+
+# --- ACP case-page discovery: caseids 3140000-3375000, rng 20260924, 538 probes ---
+50970846   # APP/Q3305/W/21/3286463  ALLOWED  (Mendip District Council (Pre Apr 2023))
+40937381   # APP/Z1510/W/20/3256120  ALLOWED  (Braintree District Council)
+57923065   # APP/X3025/W/24/3336992  ALLOWED  (Mansfield District Council)
+46261364   # APP/Y3940/W/21/3281690  ALLOWED  (Wiltshire Council)
+58338486   # APP/Y3615/W/23/3328722  ALLOWED  (Guildford Borough Council)
+21646657   # APP/J3530/W/16/3155285  ALLOWED  (Suffolk Coastal District Council (ceased Apr 2019))
+49103935   # APP/E3715/W/22/3295435  ALLOWED  (Rugby Borough Council)
+46865542   # APP/D2320/W/21/3283978  ALLOWED  (Chorley Borough Council)
+39710616   # APP/P0240/W/20/3248094  ALLOWED  (Central Bedfordshire Council)
+44757889   # APP/Q1153/D/21/3272093  ALLOWED  (West Devon Borough Council)
+24995839   # APP/H2265/D/17/3185211  ALLOWED  (Tonbridge and Malling Borough Council)
+41887805   # APP/R5510/W/20/3259529  ALLOWED  (London Borough of Hillingdon)
+60247322   # APP/U2750/W/24/3351387  ALLOWED  (North Yorkshire Council)
+45661333   # APP/D0515/W/21/3275338  ALLOWED  (Fenland District Council)
+46409687   # APP/M5450/D/22/3290983  ALLOWED  (London Borough of Harrow)
+63116222   # APP/R3515/W/25/3361535  ALLOWED  (Ipswich Borough Council)
+22269605   # APP/A5840/D/17/3170915  ALLOWED  (London Borough of Southwark)
+62010780   # APP/R0660/W/24/3345937  ALLOWED  (Cheshire East Council)
+24433076   # APP/N5660/W/17/3176218  ALLOWED  (London Borough of Lambeth)
+49692106   # APP/Y1110/W/22/3300322  ALLOWED  (Exeter City Council)
+34213691   # APP/G5180/D/19/3231684  ALLOWED  (London Borough of Bromley)
+30722465   # APP/D1590/W/18/3197331  ALLOWED  (Southend-on-Sea)
+50867863   # APP/Z0116/D/22/3308653  ALLOWED  (Bristol City Council)
+42297136   # APP/M5450/D/21/3267881  ALLOWED  (London Borough of Harrow)
+31988796   # APP/B1740/D/19/3222517  ALLOWED  (New Forest District Council)
+36378272   # APP/R3650/W/19/3237325  ALLOWED  (Waverley Borough Council)
+51211575   # APP/V5570/D/22/3310729  ALLOWED  (London Borough of Islington)
+56482551   # APP/H1705/D/23/3332928  ALLOWED  (Basingstoke and Deane Borough Council)
+23062358   # APP/W5780/D/17/3174830  ALLOWED  (London Borough of Redbridge)
+32296969   # APP/D3505/W/18/3219272  ALLOWED  (Babergh District Council)
+60192070   # APP/L3625/W/24/3348491  ALLOWED  (Reigate and Banstead Borough Council)
+20234092   # APP/C3620/W/16/3163363  ALLOWED  (Mole Valley District Council)
+28521239   # APP/T0355/W/18/3196911  ALLOWED  (Royal Borough of Windsor and Maidenhead)
+29327037   # APP/V4630/D/18/3208077  ALLOWED  (Walsall Metropolitan Borough Council)
+18771821   # APP/T2350/W/16/3154915  ALLOWED  (Ribble Valley Borough Council)
+43385748   # APP/Z5060/D/21/3271953  ALLOWED  (London Borough of Barking and Dagenham Council)
+40628519   # APP/H5390/D/20/3258521  ALLOWED  (London Borough of Hammersmith and Fulham)
+58577900   # APP/L5810/W/23/3333651  ALLOWED  (Richmond Upon Thames London Borough Council)
+41257089   # APP/D0121/W/20/3253758  ALLOWED  (North Somerset Council)
+65041124   # APP/N4720/D/25/3373020  ALLOWED  (Leeds City Council)
+19693983   # APP/Y2430/W/16/3154683  ALLOWED  (Melton Borough Council)
+29660106   # APP/W0340/W/18/3202133  ALLOWED  (West Berkshire District Council)
+52288879   # APP/D0840/W/22/3309357  ALLOWED  (Cornwall Council)
+24617662   # APP/D5120/D/17/3180199  ALLOWED  (London Borough of Bexley)
+25205539   # APP/X2220/W/17/3181154  ALLOWED  (Dover District Council)
+40359827   # APP/T3725/D/20/3253224  ALLOWED  (Warwick District Council)
+47991715   # APP/L3245/W/22/3290782  ALLOWED  (Shropshire Council)
+19894725   # APP/U2235/W/16/3156163  ALLOWED  (Maidstone Borough Council)
+35003639   # APP/W0340/W/19/3234643  ALLOWED  (West Berkshire District Council)
+41773034   # APP/J3720/D/20/3264346  ALLOWED  (Stratford-on-Avon District Council)
+27801638   # APP/R5510/D/18/3199216  ALLOWED  (London Borough of Hillingdon)
+56162238   # APP/U5930/W/23/3321777  ALLOWED  (Waltham Forest London Borough Council)
+56908717   # APP/J3015/W/23/3327877  ALLOWED  (Broxtowe Borough Council)
+39695208   # APP/A3655/W/20/3249620  ALLOWED  (Woking Borough Council)
+33640153   # APP/L5810/W/19/3228552  ALLOWED  (Richmond Upon Thames London Borough Council)
+28449397   # APP/W1145/W/18/3195519  ALLOWED  (Torridge District Council)
+46364798   # APP/W0340/W/21/3279937  ALLOWED  (West Berkshire District Council)
+22200270   # APP/G5180/D/17/3170614  ALLOWED  (London Borough of Bromley)
+46213724   # APP/A3655/D/21/3278546  ALLOWED  (Woking Borough Council)
+54277892   # APP/M9496/D/23/3325030  ALLOWED  (Peak District National Park Authority)
+64131313   # APP/W3520/W/25/3366713  ALLOWED  (Mid Suffolk District Council)
+60891052   # APP/A2470/D/24/3340459  ALLOWED  (Rutland County Council)
+43981381   # APP/N5090/D/21/3275307  ALLOWED  (London Borough of Barnet)
+24592508   # APP/X5990/W/17/3182176  ALLOWED  (City of Westminster Council)
+19293304   # APP/R5510/D/16/3160306  ALLOWED  (London Borough of Hillingdon)
+40221194   # APP/A5840/W/20/3253259  ALLOWED  (London Borough of Southwark)
+21532044   # APP/D3125/W/17/3166822  ALLOWED  (West Oxfordshire District Council)
+39678084   # APP/Y2810/W/20/3251960  ALLOWED  (Daventry District Council)
+22877810   # APP/D0840/W/17/3174232  ALLOWED  (Cornwall Council)
+32191181   # APP/Y1110/D/19/3221444  ALLOWED  (Exeter City Council)
+48620270   # APP/D2320/W/22/3293422  ALLOWED  (Chorley Borough Council)
+40325346   # APP/Z5630/W/20/3246194  ALLOWED  (Royal Borough of Kingston Upon Thames)
+62587985   # APP/N1730/D/25/3364060  ALLOWED  (Hart District Council)
+19958983   # APP/T5150/W/16/3159699  ALLOWED  (London Borough of Brent)
+37578636   # APP/D1265/W/19/3237292  ALLOWED  (Dorset Council)
+28662465   # APP/J1725/W/18/3201087  ALLOWED  (Gosport Borough Council)
+23100787   # APP/C4615/D/17/3178993  ALLOWED  (Dudley Metropolitan Borough Council)
+30545896   # APP/K3605/W/18/3202616  ALLOWED  (Elmbridge Borough Council)
+37090269   # APP/G3110/W/19/3241092  ALLOWED  (Oxford City Council)
+59591938   # APP/P4605/W/24/3339129  ALLOWED  (Birmingham City Council)
+55990531   # APP/X0415/W/23/3322415  ALLOWED  (Buckinghamshire Council - East Area (Chiltern))
+42888136   # APP/B1930/W/20/3265925  ALLOWED  (St Albans City Council)
+62487687   # APP/C3810/W/24/3357172  ALLOWED  (Arun District Council)
+37601019   # APP/N5090/W/20/3245093  ALLOWED  (London Borough of Barnet)
+63338780   # APP/N4720/W/25/3365964  ALLOWED  (Leeds City Council)
+50470755   # APP/E2734/W/22/3307345  ALLOWED  (Harrogate Borough Council)
+36946545   # APP/P2935/W/19/3241424  ALLOWED  (Northumberland County Council)
+59442632   # APP/E3335/W/23/3324775  ALLOWED  (Somerset Council)
+38594978   # APP/V1260/W/20/3244763  ALLOWED  (Bournemouth Christchurch and Poole Council)
+43084637   # APP/E2001/D/21/3268084  ALLOWED  (East Riding of Yorkshire Council)
+63239159   # APP/A1530/W/25/3364083  ALLOWED  (Colchester City Council)
+51694884   # APP/C3430/D/22/3310725  ALLOWED  (South Staffordshire District Council)
+21219772   # APP/V2255/W/16/3153116  ALLOWED  (Swale Borough Council)
+61611869   # APP/R1845/W/24/3344163  ALLOWED  (Wyre Forest District Council)
+33881667   # APP/B1930/D/19/3226996  ALLOWED  (St Albans City Council)
+61842805   # APP/H0520/W/24/3354806  DISMISSED  (Huntingdonshire District Council)
+53688714   # APP/X0415/W/22/3313207  DISMISSED  (Buckinghamshire Council - East Area (Chiltern))
+47086828   # APP/Q5300/W/21/3283245  DISMISSED  (London Borough of Enfield)
+52062576   # APP/B5480/W/22/3305428  DISMISSED  (London Borough of Havering)
+55943195   # APP/Z5060/W/23/3323885  DISMISSED  (London Borough of Barking and Dagenham Council)
+51479222   # APP/X1925/W/21/3289069  DISMISSED  (North Hertfordshire District Council)
+56374439   # APP/L3245/W/23/3330827  DISMISSED  (Shropshire Council)
+58489907   # APP/C1570/W/24/3339952  DISMISSED  (Uttlesford District Council)
+52137031   # APP/K5600/D/22/3310713  DISMISSED  (Royal Borough of Kensington and Chelsea)
+34281916   # APP/B5480/W/19/3230483  DISMISSED  (London Borough of Havering)
+40112887   # APP/X0360/W/20/3255736  DISMISSED  (Wokingham Borough Council)
+33473174   # APP/H2265/W/18/3204021  DISMISSED  (Tonbridge and Malling Borough Council)
+31049634   # APP/Y5420/W/18/3209135  DISMISSED  (London Borough of Haringey)
+28622127   # APP/Z0116/W/18/3194023  DISMISSED  (Bristol City Council)
+35811825   # APP/W0530/W/19/3236877  DISMISSED  (South Cambridgeshire District Council)
+41271589   # APP/V1260/W/20/3263286  DISMISSED  (Bournemouth Christchurch and Poole Council)
+65196552   # APP/U2750/W/25/3374159  DISMISSED  (North Yorkshire Council)
+41169023   # APP/Z1510/W/20/3261576  DISMISSED  (Braintree District Council)
+28000200   # APP/P2365/W/18/3197640  DISMISSED  (West Lancashire Borough Council)
+45814569   # APP/L1765/W/21/3269456  DISMISSED  (Winchester City Council)
+41282212   # APP/W1715/W/20/3260432  DISMISSED  (Eastleigh Borough Council)
+41133405   # APP/H0520/W/20/3256984  DISMISSED  (Huntingdonshire District Council)
+47086044   # APP/P1615/W/21/3286332  DISMISSED  (Forest of Dean District Council)
+55113996   # APP/Z1510/W/22/3311887  DISMISSED  (Braintree District Council)
+50185520   # APP/Q3820/W/22/3298398  DISMISSED  (Crawley Borough Council)
+39026869   # APP/L3245/W/20/3250255  DISMISSED  (Shropshire Council)
+43858111   # APP/P4605/W/21/3273056  DISMISSED  (Birmingham City Council)
+58497895   # APP/J1535/W/23/3332743  DISMISSED  (Epping Forest District Council)
+42748741   # APP/U1105/D/21/3267759  DISMISSED  (East Devon District Council)
+48113737   # APP/K5600/D/22/3294990  DISMISSED  (Royal Borough of Kensington and Chelsea)
+38565887   # APP/Q3115/W/20/3248726  DISMISSED  (South Oxfordshire District Council)
+23476218   # APP/L5810/W/17/3167679  DISMISSED  (Richmond Upon Thames London Borough Council)
+40891643   # APP/J0405/W/20/3256147  DISMISSED  (Buckinghamshire Council - North Area (Aylesbury))
+32729119   # APP/Q4625/W/19/3221365  DISMISSED  (Solihull Metropolitan Borough Council)
+29343960   # APP/A2280/W/17/3189737  DISMISSED  (Medway Council)
+36094547   # APP/N5660/W/19/3239069  DISMISSED  (London Borough of Lambeth)
+48942259   # APP/F1040/W/22/3291427  DISMISSED  (South Derbyshire District Council)
+43802860   # APP/W5780/D/21/3268644  DISMISSED  (London Borough of Redbridge)
+18764907   # APP/D2510/W/16/3155775  DISMISSED  (East Lindsey District Council)
+60099626   # APP/K0425/W/24/3336594  DISMISSED  (Buckinghamshire Council - West Area (Wycombe))
+64774428   # APP/Z4310/D/25/3373578  DISMISSED  (Liverpool City Council)
+35815334   # APP/H1705/D/19/3238815  DISMISSED  (Basingstoke and Deane Borough Council)
+48248771   # APP/W5780/D/22/3290622  DISMISSED  (London Borough of Redbridge)
+61278845   # APP/J1915/W/24/3349096  DISMISSED  (East Hertfordshire District Council)
+51520386   # APP/D1265/W/22/3299374  DISMISSED  (Dorset Council)
+58589825   # APP/D0840/W/24/3337474  DISMISSED  (Cornwall Council)
+55268209   # APP/F5540/D/23/3331641  DISMISSED  (London Borough of Hounslow)
+55647622   # APP/M9496/W/23/3320562  DISMISSED  (Peak District National Park Authority)
+40732829   # APP/V1260/W/20/3244741  DISMISSED  (Bournemouth Christchurch and Poole Council)
+43058755   # APP/E5900/D/21/3272828  DISMISSED  (London Borough of Tower Hamlets)
+32627032   # APP/D3830/W/18/3217593  DISMISSED  (Mid Sussex District Council)
+49754228   # APP/M2840/W/22/3298751  DISMISSED  (North Northamptonshire Council)
+28687355   # APP/L3625/W/18/3195195  DISMISSED  (Reigate and Banstead Borough Council)
+56223442   # APP/V5570/W/23/3326172  DISMISSED  (London Borough of Islington)
+22185098   # APP/Q1153/W/17/3169048  DISMISSED  (West Devon Borough Council)
+47244702   # APP/G2625/W/21/3274824  DISMISSED  (Norwich City Council)
+18912814   # APP/D3830/W/16/3155847  DISMISSED  (Mid Sussex District Council)
+49520807   # APP/M1595/D/22/3299312  DISMISSED  (Thurrock Borough Council)
+48809741   # APP/N5090/W/21/3284340  DISMISSED  (London Borough of Barnet)
+19145141   # APP/J2210/W/16/3146996  DISMISSED  (Canterbury City Council)
+55997714   # APP/B5480/W/23/3316500  DISMISSED  (London Borough of Havering)
+48620954   # APP/T4210/D/22/3294815  DISMISSED  (Bury Metropolitan Borough Council)
+53025298   # APP/N4720/D/23/3315354  DISMISSED  (Leeds City Council)
+58870377   # APP/C1625/W/24/3338651  DISMISSED  (Stroud District Council)
+46111872   # APP/F0114/W/21/3278320  DISMISSED  (Bath and North East Somerset Council)
+50033037   # APP/C9499/W/22/3295101  DISMISSED  (Yorkshire Dales National Park Authority)
+31090430   # APP/G2713/W/18/3215776  DISMISSED  (Hambleton District Council)
+59435422   # APP/T0355/W/24/3338697  DISMISSED  (Royal Borough of Windsor and Maidenhead)
+44626245   # APP/G5180/W/21/3268094  DISMISSED  (London Borough of Bromley)
+36982233   # APP/M3645/W/19/3239577  DISMISSED  (Tandridge District Council)
+21567104   # APP/Q3115/W/17/3168400  DISMISSED  (South Oxfordshire District Council)
+24765098   # APP/U5930/D/17/3183381  DISMISSED  (Waltham Forest London Borough Council)
+39885020   # APP/J1535/D/20/3258086  DISMISSED  (Epping Forest District Council)
+33051677   # APP/K1128/W/19/3224713  DISMISSED  (South Hams District Council)
+40536564   # APP/V4250/D/20/3260325  DISMISSED  (Wigan Metropolitan Borough Council)
+63887140   # APP/R2520/D/25/3370190  DISMISSED  (North Kesteven District Council)
+42878419   # APP/B0230/W/21/3268329  DISMISSED  (Luton Borough Council)
+51472201   # APP/Y9507/W/21/3289720  DISMISSED  (South Downs National Park Authority)
+20087011   # APP/W3520/W/16/3162070  DISMISSED  (Mid Suffolk District Council)
+30946630   # APP/L1765/W/18/3206707  DISMISSED  (Winchester City Council)
+63104031   # APP/B2355/W/25/3360175  DISMISSED  (Rossendale Borough Council)
+32064106   # APP/D0121/W/19/3219584  DISMISSED  (North Somerset Council)
+37746076   # APP/P1615/W/20/3247082  DISMISSED  (Forest of Dean District Council)
+25386027   # APP/M5450/W/17/3184121  DISMISSED  (London Borough of Harrow)
+23444543   # APP/Z3635/W/17/3176519  DISMISSED  (Spelthorne Borough Council)
+51349851   # APP/E2001/W/22/3306295  DISMISSED  (East Riding of Yorkshire Council)
+51761560   # APP/X1925/W/22/3301143  DISMISSED  (North Hertfordshire District Council)
+46541275   # APP/E3715/D/22/3290084  DISMISSED  (Rugby Borough Council)
+26044226   # APP/D4635/W/17/3190406  DISMISSED  (Wolverhampton City Council)
+21295384   # APP/P1425/W/16/3166243  DISMISSED  (Lewes District Council)
+49854037   # APP/Y3940/W/22/3293001  DISMISSED  (Wiltshire Council)
+34317350   # APP/F2415/W/19/3223880  DISMISSED  (Harborough District Council)
+36186094   # APP/R0660/D/19/3239639  DISMISSED  (Cheshire East Council)
+39480330   # APP/P3420/W/20/3248508  DISMISSED  (Newcastle-under-Lyme Borough Council)
+64643981   # APP/Y5420/W/24/3357080  DISMISSED  (London Borough of Haringey)

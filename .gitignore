@@ -1,0 +1,36 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Secrets
+.env
+*.pem
+
+# Data: generated corpora and cached PINS letters (OGL - reproduce via harvester/harvest.py)
+harvester/pdf-cache/
+harvester/*.jsonl
+!harvester/corpus_balanced.jsonl
+
+# Build outputs / raw run outputs
+chaincode/agent-action/agentaction
+results/raw/
+
+
+# LLM response cache (reproducible reruns; archive with the artefact, not in git)
+results/cache/
+
+# Third party datasets: raw downloads and generated corpora (rebuilt by prepare.py)
+datasets/*/raw/
+datasets/*/*.jsonl
+!datasets/contractnli/corpus_*.jsonl
+
+# Full run: per case outputs are large (archive with the artefact); runs.csv is tracked
+results/full/*/
+results/full.log
+results/live.log

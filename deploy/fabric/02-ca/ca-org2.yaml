@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca-org2
+  namespace: cgc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ca-org2
+  template:
+    metadata:
+      labels:
+        app: ca-org2
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+      containers:
+        - name: ca-org2
+          image: hyperledger/fabric-ca:1.5.7
+          imagePullPolicy: IfNotPresent
+          command: ["fabric-ca-server", "start", "-b", "admin:adminpw", "--port", "8054", "-d"]
+          env:
+            - name: FABRIC_CA_SERVER_CA_NAME
+              value: ca-org2
+            - name: FABRIC_CA_SERVER_TLS_ENABLED
+              value: "true"
+            - name: FABRIC_CA_SERVER_CSR_CN
+              value: ca-org2
+            - name: FABRIC_CA_SERVER_CSR_HOSTS
+              value: ca-org2,localhost
+          ports:
+            - containerPort: 8054
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          volumeMounts:
+            - name: data
+              mountPath: /etc/hyperledger/fabric-ca-server
+              subPath: organizations/fabric-ca/org2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ca-org2
+  namespace: cgc
+spec:
+  selector:
+    app: ca-org2
+  type: ClusterIP
+  ports:
+    - port: 8054
+      targetPort: 8054
+      protocol: TCP

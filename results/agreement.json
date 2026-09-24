@@ -1,0 +1,100 @@
+{
+  "ANY": {
+    "Org2MSP": {
+      "cases": 1200,
+      "round1_split": 0,
+      "conflict": 0,
+      "commit_vs_abandon": 0,
+      "ledger_split": 0
+    },
+    "Org3MSP": {
+      "cases": 1200,
+      "round1_split": 0,
+      "conflict": 0,
+      "commit_vs_abandon": 0,
+      "ledger_split": 0
+    },
+    "cases": 1200,
+    "broadcast_split": 0,
+    "ledger_split": 0
+  },
+  "MAJORITY": {
+    "Org2MSP": {
+      "cases": 1200,
+      "round1_split": 76,
+      "conflict": 76,
+      "commit_vs_abandon": 0,
+      "ledger_split": 0
+    },
+    "Org3MSP": {
+      "cases": 1200,
+      "round1_split": 58,
+      "conflict": 58,
+      "commit_vs_abandon": 0,
+      "ledger_split": 0
+    },
+    "cases": 1200,
+    "broadcast_split": 76,
+    "ledger_split": 0
+  },
+  "ROLE_WEIGHTED": {
+    "Org2MSP": {
+      "cases": 1200,
+      "round1_split": 0,
+      "conflict": 0,
+      "commit_vs_abandon": 76,
+      "ledger_split": 0
+    },
+    "Org3MSP": {
+      "cases": 1200,
+      "round1_split": 1200,
+      "conflict": 58,
+      "commit_vs_abandon": 1142,
+      "ledger_split": 0
+    },
+    "cases": 1200,
+    "broadcast_split": 0,
+    "ledger_split": 0
+  },
+  "UNANIMOUS": {
+    "Org2MSP": {
+      "cases": 1200,
+      "round1_split": 1124,
+      "conflict": 0,
+      "commit_vs_abandon": 1124,
+      "ledger_split": 0
+    },
+    "Org3MSP": {
+      "cases": 1200,
+      "round1_split": 1142,
+      "conflict": 0,
+      "commit_vs_abandon": 1142,
+      "ledger_split": 0
+    },
+    "cases": 1200,
+    "broadcast_split": 1124,
+    "ledger_split": 0
+  },
+  "properties": {
+    "trusted orchestrator": {
+      "forgery": "succeeds",
+      "omission": "undetected",
+      "agreement": "one tally, trusted"
+    },
+    "signed voting, one tally": {
+      "forgery": "refused",
+      "omission": "undetected",
+      "agreement": "one tally, trusted"
+    },
+    "signed broadcast": {
+      "forgery": "refused",
+      "omission": "detected by the other parties",
+      "agreement": "lost under equivocation without an agreement protocol"
+    },
+    "ledger (CGC)": {
+      "forgery": "refused",
+      "omission": "a committed vote cannot be removed; commit can be delayed",
+      "agreement": "one ordered vote per organisation"
+    }
+  }
+}

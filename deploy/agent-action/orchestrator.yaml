@@ -1,0 +1,27 @@
+# Trusted orchestrator service, the latency baseline for RQ2: the same routes as
+# the gateways, but one process tallies every organisation's votes in memory.
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: orchestrator, namespace: cgc }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: orchestrator } }
+  template:
+    metadata: { labels: { app: orchestrator } }
+    spec:
+      containers:
+        - name: orchestrator
+          image: cgc/orchestrator:local
+          imagePullPolicy: IfNotPresent
+          ports: [{ containerPort: 5000 }]
+          readinessProbe: { tcpSocket: { port: 5000 }, periodSeconds: 2 }
+          resources:
+            requests: { memory: 64Mi, cpu: 50m }
+            limits:   { memory: 256Mi, cpu: 500m }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: orchestrator, namespace: cgc }
+spec:
+  selector: { app: orchestrator }
+  ports: [{ port: 5000, targetPort: 5000 }]

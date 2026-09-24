@@ -1,0 +1,4 @@
+langgraph>=0.2
+anthropic>=0.40    # only for --reviewer claude
+requests>=2.28     # only for --ledger api
+cryptography>=42     # Ed25519 signatures for the ledgerless baseline

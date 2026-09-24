@@ -1,0 +1,8 @@
+# Trusted orchestrator service (latency baseline for RQ2). Build from agents/:
+#   docker build -f Dockerfile.orchestrator -t cgc/orchestrator:local .
+FROM python:3.13-slim
+RUN pip install --no-cache-dir "cryptography>=42"
+WORKDIR /app
+COPY ledger.py coordinators.py orchestrator_server.py ./
+EXPOSE 5000
+CMD ["python", "orchestrator_server.py", "--port", "5000"]

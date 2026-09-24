@@ -1,0 +1,66 @@
+[
+  {
+    "label": "all-three",
+    "definition": "Version: 1.1, Sequence: 2, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true, Org3MSP: true]",
+    "withholding": "Org3",
+    "gate": "MAJORITY",
+    "steps": [
+      {
+        "org": "Org1MSP",
+        "call": "/proposeStep",
+        "committed": false,
+        "detail": "Error: No valid responses from any peers. Errors:\n    peer=undefined, status=grpc, message=Peer endorsements do not match"
+      },
+      {
+        "org": "Org1MSP",
+        "call": "/voteStep",
+        "committed": false,
+        "detail": "Error: No valid responses from any peers. Errors:\n    peer=undefined, status=grpc, message=Peer endorsements do not match"
+      },
+      {
+        "org": "Org2MSP",
+        "call": "/voteStep",
+        "committed": false,
+        "detail": "Error: No valid responses from any peers. Errors:\n    peer=undefined, status=grpc, message=Peer endorsements do not match"
+      },
+      {
+        "org": "Org1MSP",
+        "call": "/finalizeStep",
+        "committed": false,
+        "detail": "Error: No valid responses from any peers. Errors:\n    peer=undefined, status=grpc, message=Peer endorsements do not match"
+      }
+    ]
+  },
+  {
+    "label": "two-of-three",
+    "definition": "Version: 1.2, Sequence: 3, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true, Org3MSP: true]",
+    "withholding": "Org3",
+    "gate": "MAJORITY",
+    "steps": [
+      {
+        "org": "Org1MSP",
+        "call": "/proposeStep",
+        "committed": true,
+        "detail": ""
+      },
+      {
+        "org": "Org1MSP",
+        "call": "/voteStep",
+        "committed": true,
+        "detail": ""
+      },
+      {
+        "org": "Org2MSP",
+        "call": "/voteStep",
+        "committed": true,
+        "detail": ""
+      },
+      {
+        "org": "Org1MSP",
+        "call": "/finalizeStep",
+        "committed": true,
+        "detail": "COMMITTED"
+      }
+    ]
+  }
+]

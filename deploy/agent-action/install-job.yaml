@@ -1,0 +1,65 @@
+# Resolves each org's agentaction package id and writes it to /shared for the
+# chaincode Deployments and the approve step. The approved definition is the
+# source of truth: if the org already approved this sequence, its package id is
+# reused. Otherwise the package is built, installed, and its exact id computed.
+# (Package tarballs embed timestamps, so rebuilding one yields a new id; picking
+# "the first installed package" would drift away from the approved one.)
+# __CHANNEL__, __CC_NAME__ and __CC_SEQUENCE__ are substituted by up.sh.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: agentaction-install
+  namespace: cgc
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+      containers:
+        - name: tools
+          image: hyperledger/fabric-tools:2.5
+          command: ["/bin/bash", "-euo", "pipefail", "-c"]
+          env:
+            - { name: FABRIC_CFG_PATH, value: /etc/hyperledger/fabric }
+            - { name: CC_LABEL, value: "agentaction_1.0" }
+          args:
+            - |
+              mkdir -p /tmp/cc-pkg
+              echo "{\"path\":\"\",\"type\":\"external\",\"label\":\"${CC_LABEL}\"}" > /tmp/cc-pkg/metadata.json
+
+              # One package per org: connection.json points each peer at its own
+              # chaincode server, so the package ids differ per org.
+              for ORG in 1 2 3; do
+                rm -rf /tmp/cc-pkg/code && mkdir -p /tmp/cc-pkg/code
+                echo "{\"address\":\"agentaction-org${ORG}:7052\",\"dial_timeout\":\"10s\",\"tls_required\":false}" \
+                  > /tmp/cc-pkg/code/connection.json
+                tar -C /tmp/cc-pkg/code -czf /tmp/cc-pkg/code.tar.gz .
+                tar -C /tmp/cc-pkg -czf "/tmp/agentaction-org${ORG}.tgz" metadata.json code.tar.gz
+
+                export CORE_PEER_LOCALMSPID=Org${ORG}MSP
+                export CORE_PEER_TLS_ENABLED=true
+                export CORE_PEER_TLS_ROOTCERT_FILE=/organizations/peerOrganizations/org${ORG}.example.com/peers/peer0.org${ORG}.example.com/tls/ca.crt
+                export CORE_PEER_MSPCONFIGPATH=/organizations/peerOrganizations/org${ORG}.example.com/users/Admin@org${ORG}.example.com/msp
+                export CORE_PEER_ADDRESS=peer0-org${ORG}:7051
+
+                PKG_ID=$(peer lifecycle chaincode queryapproved -C __CHANNEL__ -n __CC_NAME__ \
+                  --sequence __CC_SEQUENCE__ -O json 2>/dev/null \
+                  | tr -d '\n ' | grep -o '"package_id":"[^"]*"' | head -1 | cut -d'"' -f4 || true)
+                if [ -n "${PKG_ID}" ]; then
+                  echo "==> org${ORG} already approved sequence __CC_SEQUENCE__; reusing its package"
+                else
+                  echo "==> installing on peer0-org${ORG}"
+                  peer lifecycle chaincode install "/tmp/agentaction-org${ORG}.tgz" || true   # already installed is fine
+                  PKG_ID=$(peer lifecycle chaincode calculatepackageid "/tmp/agentaction-org${ORG}.tgz")
+                fi
+                [ -n "${PKG_ID}" ] || { echo "no package id for org${ORG}"; exit 1; }
+                echo "org${ORG} package_id=${PKG_ID}"
+                echo "${PKG_ID}" > "/shared/agentaction-package-id-org${ORG}"
+              done
+          volumeMounts:
+            - { name: data, mountPath: /organizations, subPath: organizations }
+            - { name: data, mountPath: /shared,        subPath: shared }

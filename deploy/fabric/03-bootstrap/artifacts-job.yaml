@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cgc-artifacts
+  namespace: cgc
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        job: cgc-artifacts
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+        - name: scripts
+          configMap:
+            name: cgc-bootstrap-scripts
+            defaultMode: 0755
+        - name: configtx
+          configMap:
+            name: cgc-configtx
+      containers:
+        - name: artifacts
+          image: hyperledger/fabric-tools:2.5
+          command: ["/bin/bash", "-c", "/scripts/create-genesis.sh"]
+          volumeMounts:
+            - name: data
+              mountPath: /organizations
+              subPath: organizations
+            - name: data
+              mountPath: /system-genesis-block
+              subPath: system-genesis-block
+            - name: data
+              mountPath: /channel-artifacts
+              subPath: channel-artifacts
+            - name: scripts
+              mountPath: /scripts
+            - name: configtx
+              mountPath: /configtx
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cgc-data
+  namespace: cgc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  # Omit storageClassName to use the cluster default:
+  # - kind ships "standard" (rancher.io/local-path)
+  # - k3s ships "local-path" (rancher.io/local-path)

@@ -1,0 +1,68 @@
+# Approves the agentaction definition for each org and commits it to the channel.
+# No --init-required: the chaincode falls back to a MAJORITY/3 policy until
+# SetPolicy is called. __CC_NAME__/__CC_VERSION__/__CC_SEQUENCE__/__CHANNEL__
+# and __SIG_POLICY__ are substituted by deploy/scripts/up.sh.
+#
+# __SIG_POLICY__ is the native endorsement policy. Fabric validation checks the
+# endorsement signatures, not the chaincode logic, so organisations able to
+# satisfy it can commit any write set. It must therefore require at least the
+# organisations the vote gate requires (e.g. AND of all three for UNANIMOUS);
+# empty means the channel default (MAJORITY).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: agentaction-approve-commit
+  namespace: cgc
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+      containers:
+        - name: tools
+          image: hyperledger/fabric-tools:2.5
+          command: ["/bin/bash", "-euo", "pipefail", "-c"]
+          env:
+            - { name: FABRIC_CFG_PATH, value: /etc/hyperledger/fabric }
+            - { name: ORDERER_CA, value: /organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem }
+          args:
+            - |
+              CC="--channelID __CHANNEL__ --name __CC_NAME__ --version __CC_VERSION__ --sequence __CC_SEQUENCE__"
+              SIG="__SIG_POLICY__"
+              if [ -n "${SIG}" ]; then CC="${CC} --signature-policy ${SIG}"; fi
+              TLS="--tls --cafile ${ORDERER_CA}"
+              set_org() {
+                export CORE_PEER_LOCALMSPID=Org$1MSP
+                export CORE_PEER_TLS_ENABLED=true
+                export CORE_PEER_TLS_ROOTCERT_FILE=/organizations/peerOrganizations/org$1.example.com/peers/peer0.org$1.example.com/tls/ca.crt
+                export CORE_PEER_MSPCONFIGPATH=/organizations/peerOrganizations/org$1.example.com/users/Admin@org$1.example.com/msp
+                export CORE_PEER_ADDRESS=peer0-org$1:7051
+              }
+              PEERS=""
+              for ORG in 1 2 3; do
+                PEERS="${PEERS} --peerAddresses peer0-org${ORG}:7051 --tlsRootCertFiles /organizations/peerOrganizations/org${ORG}.example.com/peers/peer0.org${ORG}.example.com/tls/ca.crt"
+              done
+
+              for ORG in 1 2 3; do
+                set_org "${ORG}"
+                echo "==> approve Org${ORG}MSP"
+                peer lifecycle chaincode approveformyorg -o orderer:7050 ${CC} ${TLS} \
+                  --package-id "$(cat /shared/agentaction-package-id-org${ORG})"
+              done
+
+              set_org 1
+              peer lifecycle chaincode checkcommitreadiness ${CC} ${TLS} --output json
+              echo "==> commit"
+              peer lifecycle chaincode commit -o orderer:7050 ${CC} ${TLS} ${PEERS}
+              peer lifecycle chaincode querycommitted --channelID __CHANNEL__ --name __CC_NAME__
+
+              echo "==> smoke: GetPolicy"
+              peer chaincode query -C __CHANNEL__ -n __CC_NAME__ -c '{"Args":["GetPolicy"]}'
+              echo "agentaction is live"
+          volumeMounts:
+            - { name: data, mountPath: /organizations, subPath: organizations }
+            - { name: data, mountPath: /shared,        subPath: shared }

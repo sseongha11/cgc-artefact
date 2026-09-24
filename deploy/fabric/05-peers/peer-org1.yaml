@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peer0-org1
+  namespace: cgc
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: peer0-org1
+  template:
+    metadata:
+      labels:
+        app: peer0-org1
+        component: peer
+        org: org1
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cgc-data
+        - name: builders
+          configMap:
+            name: cgc-builders-config
+            defaultMode: 0544
+            items:
+              - key: detect
+                path: detect
+              - key: build
+                path: build
+              - key: release
+                path: release
+      containers:
+        - name: peer
+          image: hyperledger/fabric-peer:2.5
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "peer node start"]
+          env:
+            - { name: CORE_PEER_ID,                 value: peer0-org1 }
+            - { name: CORE_PEER_ADDRESS,            value: "peer0-org1:7051" }
+            - { name: CORE_PEER_LISTENADDRESS,      value: "0.0.0.0:7051" }
+            - { name: CORE_PEER_CHAINCODELISTENADDRESS, value: "0.0.0.0:7052" }
+            - { name: CORE_PEER_GOSSIP_BOOTSTRAP,   value: "peer0-org1:7051" }
+            - { name: CORE_PEER_GOSSIP_ENDPOINT,    value: "peer0-org1:7051" }
+            - { name: CORE_PEER_GOSSIP_EXTERNALENDPOINT, value: "peer0-org1:7051" }
+            - { name: CORE_PEER_GOSSIP_USELEADERELECTION, value: "true" }
+            - { name: CORE_PEER_GOSSIP_ORGLEADER,         value: "false" }
+            - { name: CORE_PEER_LOCALMSPID,         value: Org1MSP }
+            - { name: CORE_PEER_MSPCONFIGPATH,      value: /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp }
+            - { name: CORE_PEER_TLS_ENABLED,        value: "true" }
+            - { name: CORE_PEER_TLS_CERT_FILE,      value: /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt }
+            - { name: CORE_PEER_TLS_KEY_FILE,       value: /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key }
+            - { name: CORE_PEER_TLS_ROOTCERT_FILE,  value: /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt }
+            - { name: CORE_LEDGER_STATE_STATEDATABASE, value: CouchDB }
+            - { name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS, value: "localhost:5984" }
+            - { name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME, value: admin }
+            - { name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD, value: adminpw }
+            - { name: FABRIC_LOGGING_SPEC,          value: INFO }
+            - { name: FABRIC_CFG_PATH,              value: /etc/hyperledger/fabric }
+            - { name: CORE_OPERATIONS_LISTENADDRESS, value: "0.0.0.0:9443" }
+            - { name: CORE_METRICS_PROVIDER,        value: prometheus }
+            # Register the external chaincode builder via env var so we don't have
+            # to override the default core.yaml (which would also wipe BCCSP config).
+            - { name: CORE_CHAINCODE_EXTERNALBUILDERS, value: '[{"name":"external-builder","path":"/builders/external","propagateEnvironment":["GOPROXY"]}]' }
+          ports:
+            - { containerPort: 7051, name: grpc }
+            - { containerPort: 7052, name: chaincode }
+            - { containerPort: 9443, name: metrics }
+          resources:
+            requests:
+              memory: 384Mi
+              cpu: 100m
+            limits:
+              memory: 768Mi
+              cpu: 1000m
+          volumeMounts:
+            - { name: data, mountPath: /organizations, subPath: organizations }
+            - { name: data, mountPath: /var/hyperledger/production, subPath: state/org1/peer0 }
+            - { name: builders, mountPath: /builders/external/bin/detect, subPath: detect }
+            - { name: builders, mountPath: /builders/external/bin/build,  subPath: build }
+            - { name: builders, mountPath: /builders/external/bin/release, subPath: release }
+        - name: couchdb
+          image: couchdb:3.3.3
+          env:
+            - { name: COUCHDB_USER,     value: admin }
+            - { name: COUCHDB_PASSWORD, value: adminpw }
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 50m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          volumeMounts:
+            - { name: data, mountPath: /opt/couchdb/data, subPath: state/org1/couchdb }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-org1
+  namespace: cgc
+spec:
+  selector:
+    app: peer0-org1
+  type: ClusterIP
+  ports:
+    - { name: grpc,      port: 7051, targetPort: 7051 }
+    - { name: chaincode, port: 7052, targetPort: 7052 }
+    - { name: couchdb,   port: 5984, targetPort: 5984 }

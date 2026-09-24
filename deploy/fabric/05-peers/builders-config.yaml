@@ -1,0 +1,44 @@
+# External chaincode builder scripts. Mounted into every peer at /builders/external/bin/.
+# Lets the peer recognise our chaincode-as-server packages (type=external) and accept the
+# connection.json/metadata.json package format used by the CGC chaincode image.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cgc-builders-config
+  namespace: cgc
+data:
+  # Scripts must be POSIX-sh compatible — peer image is alpine/BusyBox; no pipefail.
+  detect: |
+    #!/bin/sh
+    set -eu
+    grep -q '"type":[[:space:]]*"external"' "$2/metadata.json"
+  build: |
+    #!/bin/sh
+    set -eu
+    SRC=$1
+    OUT=$3
+    if [ ! -f "$SRC/connection.json" ]; then
+      echo "$SRC/connection.json not found" >&2
+      exit 1
+    fi
+    cp "$SRC/connection.json" "$OUT/connection.json"
+    [ -d "$SRC/metadata" ] && cp -a "$SRC/metadata" "$OUT/metadata"
+    exit 0
+  release: |
+    #!/bin/sh
+    set -eu
+    BUILD=$1
+    REL=$2
+    if [ ! -f "$BUILD/connection.json" ]; then
+      exit 1
+    fi
+    mkdir -p "$REL/chaincode/server"
+    cp "$BUILD/connection.json" "$REL/chaincode/server/connection.json"
+    exit 0
+  core.yaml: |
+    chaincode:
+      externalBuilders:
+        - name: external-builder
+          path: /builders/external
+          propagateEnvironment:
+            - GOPROXY
