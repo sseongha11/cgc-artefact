@@ -29,8 +29,8 @@ uv pip install --python .venv/bin/python -r agents/requirements.txt matplotlib n
 ## Data archive
 
 Per case outputs of the full factorial (`results/full/<domain>/<panel>/*.jsonl`) and
-the stored LLM responses (`results/cache/`) are too large for the repository and are
-provided as `cgc-artefact-data.tar.gz`. Unpack it at the repository root:
+the stored LLM responses (`results/cache/`) are kept compressed in
+`cgc-artefact-data.tar.gz` at the repository root. Unpack it there:
 
 ```sh
 tar xzf cgc-artefact-data.tar.gz
